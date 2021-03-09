@@ -9,7 +9,8 @@ newMongo = MongoDB()
 
 
 class PIR:
-    def __init__(self, pin):
+    def __init__(self, name, pin):
+        self.idName = name
         GPIO.setmode(GPIO.BCM)
         self.pin = pin
         GPIO.setup(self.pin, GPIO.IN, GPIO.PUD_DOWN)
@@ -17,7 +18,7 @@ class PIR:
         self.estado_actual = False
         self.nuevo_estado = ""
         self.datos = ("", "")
-        self.fecha = ""
+        self.type = 'PIR'
         newSQL.Conexion()
         newMongo.mongoConexion()
 
@@ -32,10 +33,5 @@ class PIR:
             time.sleep(1)
 
     def retornarDatosPIR(self):
-        return self.datos
-
-    def guardarDatosPIRSQL(self):
-        newSQL.guardarDatosPIR(self.datos)
-
-    def guardarDatosPIRMongo(self):
-        newMongo.insertDatosSensorPIR(self.nuevo_estado, self.fecha)
+        data = {'name': self.idName, 'data': [self.datos], 'type': self.type}
+        return data

@@ -9,7 +9,8 @@ newMongo = MongoDB()
 
 
 class HCR:
-    def __init__(self,trigger,echo):
+    def __init__(self, name, trigger, echo):
+        self.idName = name
         GPIO.setmode(GPIO.BCM)
         GPIO.setwarnings(False)
         self.GPIO_TRIGGER = trigger
@@ -20,7 +21,7 @@ class HCR:
         self.StopTime = 0
         self.TimeElapsed = 0
         self.distance = 0
-        self.fecha = ""
+        self.type = 'HCR'
         newSQL.Conexion()
         self.datos = ("", "")
         newMongo.mongoConexion()
@@ -47,10 +48,5 @@ class HCR:
         self.datos = (self.distance, self.fecha)
 
     def retornarDistancia(self):
-        return self.distance
-
-    def guardarDatosSQL(self):
-        newSQL.guardarDatosHCR(self.datos)
-
-    def guardarDatosMongo(self):
-        newMongo.insertDatosSensorHCR(self.distance, self.fecha)
+        data = {'name': self.idName, 'data': [self.distance], 'type': self.type}
+        return data

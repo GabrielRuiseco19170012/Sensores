@@ -19,22 +19,8 @@ class MySQL:
         return "Conexion a MySQL exitosa"
 
     # DHT----------------------------------------------------------------
-    def guardarDatos(self, datos):
-        self.sql = "insert into SensorDHT (temperatura, humedad, fechaLectura) values (%s, %s, %s)"
+    def guardarDatos(self, data):
+        self.sql = "insert into Sensors (IDName, Data, Type) values (%s, %s, %s)"
         self.mycursor = self.mydb.cursor()
-        self.mycursor.execute(self.sql, datos)
-        self.mydb.commit()
-
-    # PIR----------------------------------------------------------------
-    def guardarDatosPIR(self, estado):
-        self.sql = "insert into SensorPIR (estado,fechaLectura) values (%s,%s)"
-        self.mycursor = self.mydb.cursor()
-        self.mycursor.execute(self.sql, estado)
-        self.mydb.commit()
-
-    # HCR----------------------------------------------------------------
-    def guardarDatosHCR(self, distancia):
-        self.sql = "insert into SensorHCR (distancia,fechaLectura) values (%s,%s)"
-        self.mycursor = self.mydb.cursor()
-        self.mycursor.execute(self.sql, distancia)
+        self.mycursor.execute(self.sql, data['name'], data['data'], data['type'])
         self.mydb.commit()

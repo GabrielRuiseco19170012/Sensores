@@ -3,44 +3,41 @@ from HCR import *
 from PIR import *
 from DataList import DataList
 
-dht = DataList()
-hcr = DataList()
-pir = DataList()
-
-DHT1 = DHT(4)
-HCR1 = HCR(17, 18)
-PIR1 = PIR(24)
-
-dht.setDataList([DHT1])
-hcr.setDataList([HCR1])
-pir.setDataList([PIR1])
+sensorList = [
+    {'name': 'dht1', 'pin': ['2']},
+    {'name': 'dht2', 'pin': ['3']},
+    {'name': 'dht3', 'pin': ['4']},
+    {'name': 'hcr1', 'pin': ['17', '11']},
+    {'name': 'hcr2', 'pin': ['27', '5']},
+    {'name': 'pir1', 'pin': ['22']},
+    {'name': 'pir2', 'pin': ['10']},
+    {'name': 'pir3', 'pin': ['9']},
+]
 
 
 class Sensors:
 
-    @staticmethod
-    def getListDHT():
-        return DHT
+    def __init__(self):
+        self.instancesList = DataList()
+        self.createInstances()
 
-    @staticmethod
-    def getListHCR():
-        return HCR
+    def createInstances(self):
+        for o in sensorList:
+            if self.instancesList.getData(o['name']) is None:
+                if o['name'][0:3] == 'dht':
+                    instance = DHT(o['name'], o['pines'][0])
+                    self.instancesList.addData(instance)
+                elif o['name'][0:3] == 'hcr':
+                    instance = HCR(o['name'], o['pines'][0], o['pines'][1])
+                    self.instancesList.addData(instance)
+                elif o['name'][0:3] == 'hcr':
+                    instance = PIR(o['name'], o['pines'][0])
+                    self.instancesList.addData(instance)
+                else:
+                    print('error al generar instancia')
 
-    @staticmethod
-    def getListPIR():
-        return PIR
+    def getOneInstance(self, name):
+        return self.instancesList.getData(name)
 
-    @staticmethod
-    def addDHT(pin):
-        nuevo = DHT(pin)
-        dht.addData(nuevo)
-
-    @staticmethod
-    def addHCR(trig, echo):
-        nuevo = HCR(trig, echo)
-        hcr.addData(nuevo)
-
-    @staticmethod
-    def addPIR(pin):
-        nuevo = PIR(pin)
-        pir.addData(nuevo)
+    def getAllInstance(self):
+        return self.instancesList
