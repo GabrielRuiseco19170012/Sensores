@@ -5,9 +5,9 @@ from datetime import datetime
 class MySQL:
     def __init__(self):
         self.host = "localhost"
-        self.user = "admin"
-        self.password = "12345"
-        self.database = "examen"
+        self.user = "root"
+        self.password = "123456"
+        self.database = "RaspberryData"
 
     def Conexion(self):
         self.mydb = MySQLConnection(
@@ -22,5 +22,5 @@ class MySQL:
     def guardarDatos(self, data):
         self.sql = "insert into Sensors (IDName, Data, Type) values (%s, %s, %s)"
         self.mycursor = self.mydb.cursor()
-        self.mycursor.execute(self.sql, data['name'], data['data'], data['type'])
+        self.mycursor.execute(self.sql, (data['name'], str(data['data']), data['type']))
         self.mydb.commit()

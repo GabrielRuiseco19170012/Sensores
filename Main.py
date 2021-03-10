@@ -3,6 +3,7 @@ from Sensors import Sensors
 from File import File
 from MySQL import *
 from MongoDB import *
+import sys
 
 newSQL = MySQL()
 newMongo = MongoDB()
@@ -15,33 +16,46 @@ except Exception as e:
     file = []
 
 sensors = Sensors()
-sensorList = sensors.getAllInstance()
-
+sensorList = sensors.getAllInstance().getDataList()
+print(sensorList)
 try:
     while True:
         for element in sensorList:
-            if element['name'][0:3] == 'dht':
+            if (getattr(element,'idName'))[0:3] == 'dht':
                 element.leerTemperatura()
                 data = element.retornarDatos()
-                newSQL.guardarDatos(data)
-                newMongo.insertDatosSensor(data)
-                file.append(data)
-                File.saveData(file)
-            elif element['name'][0:3] == 'hcr':
+                print(str(data['data']))
+                if (data['data']==[None, None]):
+                    newSQL.guardarDatos(data)
+                    newMongo.insertDatosSensor(data)
+                    file.append(data)
+                    File.saveData(file)
+                else:
+                    print('nodata')
+            elif (getattr(element,'idName'))[0:3] == 'hcr':
                 element.leerDistancia()
                 data = element.retornarDistancia()
-                newSQL.guardarDatos(data)
-                newMongo.insertDatosSensor(data)
-                file.append(data)
-                File.saveData(file)
-            elif element['name'][0:3] == 'pir':
+                print(data['data'])
+                if (data['data']!=[None, None]):
+                    newSQL.guardarDatos(data)
+                    newMongo.insertDatosSensor(data)
+                    file.append(data)
+                    File.saveData(file)
+                else:
+                    print('nodata')
+            elif (getattr(element,'idName'))[0:3] == 'pir':
                 element.leerPrescencia()
                 data = element.retornarDatosPIR()
-                newSQL.guardarDatos(data)
-                newMongo.insertDatosSensor(data)
-                file.append(data)
-                File.saveData(file)
+                print(data['data'])
+                if (data['data']!=[None, None]):
+                    newSQL.guardarDatos(data)
+                    newMongo.insertDatosSensor(data)
+                    file.append(data)
+                    File.saveData(file)
+                else:
+                    print('nodata')
             else:
                 print('Error')
 except KeyboardInterrupt:
     print("adios")
+    sys.exit()

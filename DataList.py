@@ -20,7 +20,7 @@ class DataList(object):
         elif name is not None:
             i = 0
             for x in self.myData:
-                if x['name'] == name:
+                if (getattr(x,'idName')) == name:
                     return x
                 i += 1
         else:

@@ -4,14 +4,14 @@ from PIR import *
 from DataList import DataList
 
 sensorList = [
-    {'name': 'dht1', 'pin': ['2']},
-    {'name': 'dht2', 'pin': ['3']},
-    {'name': 'dht3', 'pin': ['4']},
-    {'name': 'hcr1', 'pin': ['17', '11']},
-    {'name': 'hcr2', 'pin': ['27', '5']},
-    {'name': 'pir1', 'pin': ['22']},
-    {'name': 'pir2', 'pin': ['10']},
-    {'name': 'pir3', 'pin': ['9']},
+    {'name': 'dht1', 'pin': [2]},
+    {'name': 'dht2', 'pin': [3]},
+    {'name': 'dht3', 'pin': [4]},
+    {'name': 'hcr1', 'pin': [17, 11]},
+    {'name': 'hcr2', 'pin': [27, 5]},
+    {'name': 'pir1', 'pin': [22]},
+    {'name': 'pir2', 'pin': [10]},
+    {'name': 'pir3', 'pin': [9]},
 ]
 
 
@@ -23,15 +23,15 @@ class Sensors:
 
     def createInstances(self):
         for o in sensorList:
-            if self.instancesList.getData(o['name']) is None:
+            if self.instancesList.getData(None, o['name']) is None:
                 if o['name'][0:3] == 'dht':
-                    instance = DHT(o['name'], o['pines'][0])
+                    instance = DHT(o['name'], o['pin'][0])
                     self.instancesList.addData(instance)
                 elif o['name'][0:3] == 'hcr':
-                    instance = HCR(o['name'], o['pines'][0], o['pines'][1])
+                    instance = HCR(o['name'], o['pin'][0], o['pin'][1])
                     self.instancesList.addData(instance)
-                elif o['name'][0:3] == 'hcr':
-                    instance = PIR(o['name'], o['pines'][0])
+                elif o['name'][0:3] == 'pir':
+                    instance = PIR(o['name'], o['pin'][0])
                     self.instancesList.addData(instance)
                 else:
                     print('error al generar instancia')
