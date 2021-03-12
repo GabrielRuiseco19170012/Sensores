@@ -32,3 +32,13 @@ class MySQL:
         self.mycursor = self.mydb.cursor()
         self.mycursor.execute(self.sql, (data['name'], str(data['data']), data['type']))
         self.mydb.commit()
+
+    def getSensors(self):
+        self.sql = "select * from sensors_inst"
+        try:
+            self.mycursor = self.mydb.cursor()
+            self.mycursor.execute(self.sql)
+            data = self.mycursor.fetchall()
+            return data
+        except Exception as e:
+            raise e

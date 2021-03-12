@@ -2,18 +2,22 @@ from DHT import *
 from HCR import *
 from PIR import *
 from DataList import DataList
+from File import File
+from MySQL import *
+from MongoDB import *
+import sys
 
-sensorList = [
-    {'name': 'dht1', 'pin': [2]},
-    {'name': 'dht4', 'pin': [6]},
-    {'name': 'dht2', 'pin': [3]},
-    {'name': 'dht3', 'pin': [4]},
-    {'name': 'hcr1', 'pin': [17, 11]},
-    {'name': 'hcr2', 'pin': [27, 5]},
-    {'name': 'pir1', 'pin': [22]},
-    {'name': 'pir2', 'pin': [10]},
-    {'name': 'pir3', 'pin': [9]},
-]
+try:
+    file = File.readData()
+except Exception as e:
+    file = []
+
+newSQL = MySQL()
+newMongo = MongoDB()
+newSQL.Conexion()
+newMongo.mongoConexion()
+
+sensorList = newSQL.getSensors()
 
 
 class Sensors:
@@ -47,8 +51,8 @@ class Sensors:
         try:
             while True:
                 for element in sensorList:
-                    elemnt.read()
-                    data = elment.retunData()
+                    element.read()
+                    data = element.retunData()
                     if (data['data']==[None, None]):
                         newSQL.guardarDatos(data)
                         newMongo.insertDatosSensor(data)
