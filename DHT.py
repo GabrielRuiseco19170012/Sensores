@@ -20,15 +20,14 @@ class DHT:
         newSQL.Conexion()
         newMongo.mongoConexion()
 
-    def leerTemperatura(self):
+    def read(self):
         self.humidity, self.temperature = Adafruit_DHT.read(self.sensor, self.DHT11_pin)
         if self.humidity is not None and self.temperature is not None:
-            # print("Temperatura:",self.temperature,"|","°C","Humedad:",self.humidity,"%")
             self.ahora = datetime.now()
             self.fecha = self.ahora.strftime("%Y-%m-%d %H:%M:%S")
             self.datos = (self.temperature, self.humidity, self.fecha)
             time.sleep(1)
 
-    def retornarDatos(self):
+    def returnData(self):
         data = {'name': self.idName, 'data': [self.temperature, self.humidity], 'type': self.type}
         return data

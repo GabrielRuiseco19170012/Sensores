@@ -14,7 +14,8 @@ class MongoDB:
             self.cliente.server_info()
             return "Conexion a MongoDB Exitosa"
         except pymongo.errors.ConnectionFailure as errorConexion:
-            return "No se pudo realizar la conexion a MongoDB " + errorConexion
+            self.cliente = pymongo.MongoClient('localhost', 27017)
+            self.cliente.server_info()
 
     def insertDatosSensor(self, data):
         try:

@@ -3,9 +3,10 @@ import time
 from datetime import datetime
 from MySQL import *
 from MongoDB import *
+import threading
+import time
 
-newSQL = MySQL()
-newMongo = MongoDB()
+threads=[]
 
 
 class HCR:
@@ -23,10 +24,9 @@ class HCR:
         self.distance = 0
         self.type = 'HCR'
         newSQL.Conexion()
-        self.datos = ("", "")
         newMongo.mongoConexion()
 
-    def leerDistancia(self):
+    def readData(self):
         GPIO.output(self.GPIO_TRIGGER, True)
 
         time.sleep(0.00001)
@@ -37,16 +37,27 @@ class HCR:
 
         while GPIO.input(self.GPIO_ECHO) == 0:
             self.StartTime = time.time()
-
+            
         while GPIO.input(self.GPIO_ECHO) == 1:
             self.StopTime = time.time()
-
+            
         self.TimeElapsed = self.StopTime - self.StartTime
         self.distance = (self.TimeElapsed * 34300) / 2
-        self.ahora = datetime.now()
-        self.fecha = self.ahora.strftime("%Y-%m-%d %H:%M:%S")
-        self.datos = (self.distance, self.fecha)
 
-    def retornarDistancia(self):
+    def returnData(self):
         data = {'name': self.idName, 'data': [self.distance], 'type': self.type}
         return data
+    
+    def read(self):
+        name = self.idName
+        status = False
+        t = threading.Thread(name='Hilo' + self.idName, target=self.readData)
+        for x in threads:
+            if x == name:
+                status = status
+            else:
+                status = True
+        if status == True:
+            t.start()
+        else:
+            return

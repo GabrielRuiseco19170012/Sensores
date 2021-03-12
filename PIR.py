@@ -22,7 +22,7 @@ class PIR:
         newSQL.Conexion()
         newMongo.mongoConexion()
 
-    def leerPrescencia(self):
+    def read(self):
         self.estado_previo = self.estado_actual
         self.estado_actual = GPIO.input(self.pin)
         if self.estado_actual != self.estado_previo:
@@ -32,6 +32,6 @@ class PIR:
             self.datos = (self.nuevo_estado, self.fecha)
             time.sleep(1)
 
-    def retornarDatosPIR(self):
+    def returnData(self):
         data = {'name': self.idName, 'data': [self.datos], 'type': self.type}
         return data

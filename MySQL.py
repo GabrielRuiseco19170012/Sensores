@@ -10,12 +10,20 @@ class MySQL:
         self.database = "RaspberryData"
 
     def Conexion(self):
-        self.mydb = MySQLConnection(
-            host=self.host,
-            user=self.user,
-            password=self.password,
-            database=self.database
-        )
+        try
+            self.mydb = MySQLConnection(
+                host=self.host,
+                user=self.user,
+                password=self.password,
+                database=self.database
+            )
+        except Exception as e
+            self.mydb = MySQLConnection(
+                host="localhost",
+                user="root",
+                password="123456",
+                database="RaspberryData"
+            )
         return "Conexion a MySQL exitosa"
 
     # DHT----------------------------------------------------------------

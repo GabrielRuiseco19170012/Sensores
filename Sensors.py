@@ -5,6 +5,7 @@ from DataList import DataList
 
 sensorList = [
     {'name': 'dht1', 'pin': [2]},
+    {'name': 'dht4', 'pin': [6]},
     {'name': 'dht2', 'pin': [3]},
     {'name': 'dht3', 'pin': [4]},
     {'name': 'hcr1', 'pin': [17, 11]},
@@ -40,4 +41,21 @@ class Sensors:
         return self.instancesList.getData(name)
 
     def getAllInstance(self):
-        return self.instancesList
+        return self.instancesList.getDataList()
+    
+    def returnData(self):
+        try:
+            while True:
+                for element in sensorList:
+                    elemnt.read()
+                    data = elment.retunData()
+                    if (data['data']==[None, None]):
+                        newSQL.guardarDatos(data)
+                        newMongo.insertDatosSensor(data)
+                        file.append(data)
+                        File.saveData(file)
+                    else:
+                        print('Error')
+        except KeyboardInterrupt:
+            print("adios")
+            sys.exit()
